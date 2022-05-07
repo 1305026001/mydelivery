@@ -22,6 +22,7 @@ public class Result<T> {
         return res;
     }
 
+
     public static <T> Result<T> error(String msg) {
         Result res = new Result();
         res.msg = msg;
@@ -33,6 +34,7 @@ public class Result<T> {
         this.map.put(key, value);
         return this;
     }
+
 
 }
 
