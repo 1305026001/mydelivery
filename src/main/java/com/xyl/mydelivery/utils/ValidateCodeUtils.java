@@ -1,4 +1,4 @@
-package com.itheima.reggie.common;
+package com.xyl.mydelivery.utils;
 
 import java.util.Random;
 

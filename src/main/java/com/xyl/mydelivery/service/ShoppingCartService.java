@@ -1,4 +1,7 @@
 package com.xyl.mydelivery.service;
 
-public interface ShoppingCartService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.xyl.mydelivery.entity.ShoppingCart;
+
+public interface ShoppingCartService extends IService<ShoppingCart> {
 }

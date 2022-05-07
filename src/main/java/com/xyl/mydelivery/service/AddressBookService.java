@@ -1,4 +1,7 @@
 package com.xyl.mydelivery.service;
 
-public interface AddressBookService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.xyl.mydelivery.entity.AddressBook;
+
+public interface AddressBookService extends IService<AddressBook> {
 }

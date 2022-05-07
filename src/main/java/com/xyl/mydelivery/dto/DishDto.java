@@ -10,8 +10,8 @@ import java.util.List;
 // 需要用到DTO(Data Transfer Object)对象，即数据传输对象，一般用于Controller和Service层之间的数据传输
 @Data
 public class DishDto extends Dish {
-    //  Dish 不符合前端传过来的数据
-
+    //  Dish 不符合前端传过来的数据,需要将其转化为DishDto
+    // flavors: 菜品对应的口味数据
     private List<DishFlavor> flavors = new ArrayList<>();
 
     private String categoryName;

@@ -85,6 +85,25 @@ public class SetmealController {
 
         return Result.success("成功删除套餐！");
     }
+    // 前端发送的请求：http://localhost:8181/setmeal/list?categoryId=1516353794261180417&status=1
+    // 注意: 请求后的参数 是以key-value键值对的方式 传入，而非JSON格式，不需要使用@RequestBody 来标注，
+    //   只需要用包含 参数(key)的实体对象接收即可
+    @GetMapping("/list")  // 在消费者端 展示套餐信息
+    public Result<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        Long categoryId = setmeal.getCategoryId();
+        Integer status = setmeal.getStatus();
+        queryWrapper.eq(categoryId != null,Setmeal::getCategoryId,categoryId);
+        queryWrapper.eq(status != null,Setmeal::getStatus,status);
+
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+
+        List<Setmeal> setmeals = setmealService.list(queryWrapper);
+
+        return Result.success(setmeals);
+
+
+    }
 
 
 }

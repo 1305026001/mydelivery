@@ -5,12 +5,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-        <title>迅磊</title>
+        <title>迅磊餐购</title>
         <link rel="icon" href="../images/favicon.ico">
         <!--不同屏幕尺寸根字体设置-->
         <script src="../js/base.js"></script>
         <!--element-ui的样式-->
-        <link rel="stylesheet" href="../../../backend/plugins/element-ui/index.css" />
+        <link rel="stylesheet" href="../../backend/plugins/element-ui/index.css" />
         <!--引入vant样式-->
         <link rel="stylesheet" href="../styles/vant.min.css"/>
         <!-- 引入样式  -->
@@ -31,13 +31,13 @@
             <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">登录</el-button>
         </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-        <script src="../../../backend/plugins/vue/vue.js"></script>
+        <script src="../../backend/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
-        <script src="../../../backend/plugins/element-ui/index.js"></script>
+        <script src="../../backend/plugins/element-ui/index.js"></script>
         <!-- 引入vant样式 -->
         <script src="../js/vant.min.js"></script>
         <!-- 引入axios -->
-        <script src="../../../backend/plugins/axios/axios.min.js"></script>
+        <script src="../../backend/plugins/axios/axios.min.js"></script>
         <script src="../js/request.js"></script>
         <script src="../api/login.js"></script>
     </body>
@@ -71,24 +71,25 @@
                         this.msgFlag = true
                     }
                 },
-                async btnLogin(){
-                    if(this.form.phone && this.form.code){
-                        this.loading = true
-                        const res = await loginApi({phone:this.form.phone})
-                        this.loading = false
-                        if(res.code === 1){
-                            sessionStorage.setItem("userPhone",this.form.phone)
-                            window.requestAnimationFrame(()=>{
-                                window.location.href= '../index.html'
-                            })                           
-                        }else{
-                            this.$notify({ type:'warning', message:res.msg});
-                        }
-                    }else{
-                        this.$notify({ type:'warning', message:'请输入邮箱'});
-                    }
+
+        async btnLogin(){
+            if(this.form.phone && this.form.code){
+                this.loading = true
+                const res = await loginApi(this.form)
+                this.loading = false
+                if(res.code === 1){
+                    sessionStorage.setItem("userPhone",this.form.phone)
+                    window.requestAnimationFrame(()=>{
+                        window.location.href= '/front/index.html'
+                    })
+                }else{
+                    this.$notify({ type:'warning', message:res.msg});
                 }
+            }else{
+                this.$notify({ type:'warning', message:'请输入邮箱'});
             }
+        }
+        }
         })
     </script>
 </html>

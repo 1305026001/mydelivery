@@ -1,4 +1,7 @@
 package com.xyl.mydelivery.service;
 
-public class OrderDetailService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.xyl.mydelivery.entity.OrderDetail;
+
+public interface OrderDetailService extends IService<OrderDetail> {
 }

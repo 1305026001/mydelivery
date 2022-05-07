@@ -1,0 +1,6 @@
+后端请求:
+ 后端登录页:http://localhost:8181/backend/page/login/login.html
+ 后端主要展示页/主页:http://localhost:8181/backend/index.html
+消费端请求:
+ 消费端登录页:http://localhost:8181/front/page/login.html
+             http://localhost:8181/front/index.html

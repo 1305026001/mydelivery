@@ -34,7 +34,9 @@ public class LoginCheckFilter implements Filter {
                 "/employee/logout",
                 "/backend/**",
                 "/front/**",
-                "/common/**"
+                "/common/**",
+                "/user/sendMsg",  // 移动端 发送短信
+                "/user/login"     //  移动端登录
         };
         // 2、判断本次请求是否需要处理(该次访问是否处于登录状态)
         boolean checkLogin = isMatch(urls, requestURI);
@@ -45,7 +47,7 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request,response);
             return;
         }
-        // 4、判断登录状态(session中含有employee的登录信息)，如果已经登录，则直接放行
+        // 4-1、判断登录状态(session中含有employee的登录信息)，如果已经登录，则直接放行
         Long empId = (Long) request.getSession().getAttribute("employee");
         if (empId != null){
             log.info("用户已经登录，用户id为:{}",empId);
@@ -53,6 +55,19 @@ public class LoginCheckFilter implements Filter {
             // 自定义元数据对象处理器 MyMetaObjectHandler中需要使用 登录用户id
             //   通过ThreadLocal set和get用户id
             BaseContext.setCurrentId(empId);
+
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+        // 4-2、判断 移动端(消费者端)登录状态(session中含有employee的登录信息)，如果已经登录，则直接放行
+        Long userId = (Long) request.getSession().getAttribute("user");
+        if (userId != null){
+            log.info("用户已经登录，用户id为:{}",userId);
+
+            // 自定义元数据对象处理器 MyMetaObjectHandler中需要使用 登录用户id
+            //   通过ThreadLocal set和get用户id
+            BaseContext.setCurrentId(userId);
 
             filterChain.doFilter(request,response);
             return;

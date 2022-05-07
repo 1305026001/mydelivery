@@ -13,6 +13,7 @@ import com.xyl.mydelivery.common.Result;
 import com.xyl.mydelivery.dto.DishDto;
 import com.xyl.mydelivery.entity.Category;
 import com.xyl.mydelivery.entity.Dish;
+import com.xyl.mydelivery.entity.DishFlavor;
 import com.xyl.mydelivery.service.CategoryService;
 import com.xyl.mydelivery.service.DishFlavorService;
 import com.xyl.mydelivery.service.DishService;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,8 +113,23 @@ public class DishController {
         return Result.success("成功删除菜品信息！");
     }
 
+//    @GetMapping("/list")
+//    public Result<List<Dish>> list(Dish dish){
+//        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+//        Long categoryId = dish.getCategoryId();
+//        queryWrapper.eq(categoryId != null,Dish::getCategoryId,categoryId);
+//
+//        // status 为 1: 还在售卖的菜品
+//        queryWrapper.eq(Dish::getStatus,1);
+//        // 根据sort 属性升序片排列
+//        queryWrapper.orderByDesc(Dish::getSort);
+//        List<Dish> list = dishService.list(queryWrapper);
+//
+//        return Result.success(list);
+//    }
+
     @GetMapping("/list")
-    public Result<List<Dish>> list(Dish dish){
+    public Result<List<DishDto>> list(Dish dish){
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         Long categoryId = dish.getCategoryId();
         queryWrapper.eq(categoryId != null,Dish::getCategoryId,categoryId);
@@ -123,7 +140,32 @@ public class DishController {
         queryWrapper.orderByDesc(Dish::getSort);
         List<Dish> list = dishService.list(queryWrapper);
 
-        return Result.success(list);
+        List<DishDto> dishDtoList = list.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+
+            BeanUtils.copyProperties(item, dishDto);
+
+            // 每个item表示 一个菜品 dish，根据菜品的分类id 给菜品设置 菜品的分类名
+            Long itemCategoryId = item.getCategoryId();
+            Category category = categoryService.getById(itemCategoryId);
+
+            if (category != null) {
+                dishDto.setCategoryName(category.getName());
+            }
+
+            // 当前菜品的id,根据dishId去查询当前菜品对应的口味
+            Long dishId = item.getId();
+            LambdaQueryWrapper<DishFlavor> flavorQueryWrapper = new LambdaQueryWrapper<>();
+            flavorQueryWrapper.eq(DishFlavor::getDishId, dishId);
+
+
+            List<DishFlavor> dishFlavorList = dishFlavorService.list(flavorQueryWrapper);
+            dishDto.setFlavors(dishFlavorList);
+            return dishDto;
+
+        }).collect(Collectors.toList());
+
+        return Result.success(dishDtoList);
     }
 
     // 改变菜品的销售状态

@@ -1,6 +1,5 @@
 package com.xyl.mydelivery.config;
 
-import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.xyl.mydelivery.common.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

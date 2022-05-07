@@ -1,4 +1,4 @@
-package com.itheima.reggie.entity;
+package com.xyl.mydelivery.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
